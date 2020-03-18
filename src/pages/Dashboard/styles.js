@@ -52,10 +52,97 @@ export const Tab = styled.Text`
 `;
 
 export const Card = styled.View`
+  border: 1px solid black;
   border-radius: 4px;
-  box-shadow: 0px 0px 3px #0000001a;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   font-weight: bold;
+  margin-bottom: 32px;
   width: 100%;
+`;
+
+export const TitleWrapper = styled.View`
+  align-items: center;
+  flex-direction: row;
+`;
+
+export const Top = styled.View`
+  padding: 14.5px;
+`;
+
+export const Progress = styled.View`
+  margin: 24px auto 0;
+  position: relative;
+  width: 100%;
+`;
+
+export const ProgressLine = styled.View`
+  background: #7d40e7;
+  height: 1px;
+  left: 40px;
+  margin: 0 auto;
+  position: absolute;
+  top: 4px;
+  width: 100%;
+`;
+
+export const DotWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 0 40px;
+`;
+
+export const ProgressDot = styled.View`
+  background: ${props => (props.filled ? '#7d40e7' : '#fff')};
+  border: 1px solid #7d40e7;
+  border-radius: 4px;
+  height: 8px;
+  width: 8px;
+  z-index: 1;
+`;
+
+export const InfoWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 20px;
+`;
+
+export const ProgressInfo = styled.Text`
+  align-items: center;
+  color: #999;
+  flex-direction: row;
+  font-size: 8px;
+  margin-bottom: 6px;
+  width: 48px;
+  text-align: center;
+`;
+
+export const Bottom = styled.View`
+  align-items: flex-end;
+  background: #f8f9fd;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 18.5px;
+`;
+
+export const InfoTitle = styled.Text`
+  color: #999;
+  font-size: 8px;
+  font-weight: bold;
+`;
+
+export const InfoText = styled.Text`
+  color: #444;
+  font-size: 12px;
+  font-weight: bold;
+`;
+
+export const Details = styled.Text`
+  background: transparent;
+  border: 0;
+  color: #7d40e7;
+  font-size: 12px;
+  font-weight: bold;
 `;
 
 export const CardTitle = styled.Text`

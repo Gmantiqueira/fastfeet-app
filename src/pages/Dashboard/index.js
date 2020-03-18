@@ -5,13 +5,25 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   Avatar,
   Bold,
+  Bottom,
   Card,
   CardTitle,
   Container,
+  Details,
+  DotWrapper,
   Greet,
   Header,
+  InfoText,
+  InfoTitle,
+  InfoWrapper,
+  Progress,
+  ProgressDot,
+  ProgressInfo,
+  ProgressLine,
   Row,
   Tab,
+  TitleWrapper,
+  Top,
   TextWrapper,
 } from './styles';
 
@@ -49,10 +61,38 @@ export default function Dashboard() {
           </Row>
         </Row>
         <Card>
-          <Row style={{alignItems: 'center'}}>
-            <Icon color="#7d40e7" name="local-shipping" size={36} />
-            <CardTitle>Encomenda 01</CardTitle>
-          </Row>
+          <Top>
+            <TitleWrapper>
+              <Icon color="#7d40e7" name="local-shipping" size={36} />
+              <CardTitle>Encomenda 01</CardTitle>
+            </TitleWrapper>
+            <Progress>
+              <DotWrapper>
+                <ProgressLine />
+                <ProgressDot filled />
+                <ProgressDot filled />
+                <ProgressDot />
+              </DotWrapper>
+              <InfoWrapper>
+                <ProgressInfo>Aguardando retirada</ProgressInfo>
+                <ProgressInfo>Retirada</ProgressInfo>
+                <ProgressInfo>Entregue</ProgressInfo>
+              </InfoWrapper>
+            </Progress>
+          </Top>
+          <Bottom>
+            <View>
+              <InfoTitle>Data</InfoTitle>
+              <InfoText>14/01/2020</InfoText>
+            </View>
+
+            <View>
+              <InfoTitle>Cidade</InfoTitle>
+              <InfoText>Diadema</InfoText>
+            </View>
+
+            <Details>Ver detalhes</Details>
+          </Bottom>
         </Card>
       </View>
     </Container>
