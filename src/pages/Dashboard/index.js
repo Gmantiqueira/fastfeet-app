@@ -90,7 +90,6 @@ export default function Dashboard() {
               <InfoTitle>Cidade</InfoTitle>
               <InfoText>Diadema</InfoText>
             </View>
-
             <Details>Ver detalhes</Details>
           </Bottom>
         </Card>
