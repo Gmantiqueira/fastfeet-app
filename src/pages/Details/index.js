@@ -17,7 +17,11 @@ import {
   WhiteBackground,
 } from './styles';
 
-export default function Details() {
+export default function Details({navigation}) {
+  function reportProblem() {
+    navigation.navigate('Report');
+  }
+
   return (
     <WhiteBackground>
       <PurpleBackground />
@@ -71,7 +75,7 @@ export default function Details() {
           </Row>
         </Card>
         <Actions>
-          <Action>
+          <Action onPress={reportProblem}>
             <Icon color="#E74040" name="highlight-off" size={24} />
             <ActionInfo>Informar{'\n'}problema</ActionInfo>
           </Action>

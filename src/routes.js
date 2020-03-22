@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Details from './pages/Details';
+import Report from './pages/Report';
 import Profile from './pages/Profile';
 
 const Stack = createStackNavigator();
@@ -51,8 +52,15 @@ export default function Routes() {
     <Stack.Navigator
       screenOptions={{
         headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#7D40E7',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
       }}
-      initialRouteName="Details">
+      initialRouteName="Report">
       <Stack.Screen
         name="SignIn"
         component={SignIn}
@@ -61,10 +69,10 @@ export default function Routes() {
         }}
       />
       <Stack.Screen
-        name="Problems"
-        component={TabNavigator}
+        name="Report"
+        component={Report}
         options={{
-          headerShown: false,
+          title: 'Informar problema',
         }}
       />
       <Stack.Screen
@@ -79,13 +87,6 @@ export default function Routes() {
         component={Details}
         options={{
           title: 'Detalhes da encomenda',
-          headerStyle: {
-            backgroundColor: '#7D40E7',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
         }}
       />
     </Stack.Navigator>
