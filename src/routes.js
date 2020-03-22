@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
+import Details from './pages/Details';
 import Profile from './pages/Profile';
 
 const Stack = createStackNavigator();
@@ -47,9 +48,35 @@ function TabNavigator() {
 
 export default function Routes() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="Dashboard" component={TabNavigator} />
+    <Stack.Navigator initialRouteName="Details">
+      <Stack.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Dashboard"
+        component={TabNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Details"
+        component={Details}
+        options={{
+          title: 'Detalhes da encomenda',
+          headerStyle: {
+            backgroundColor: '#7D40E7',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 }

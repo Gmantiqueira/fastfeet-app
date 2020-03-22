@@ -27,8 +27,12 @@ import {
   TextWrapper,
 } from './styles';
 
-export default function Dashboard() {
+export default function Dashboard({navigation}) {
   const [activeTab, setActive] = useState(0);
+
+  function details() {
+    navigation.navigate('Details');
+  }
 
   return (
     <Container>
@@ -90,7 +94,7 @@ export default function Dashboard() {
               <InfoTitle>Cidade</InfoTitle>
               <InfoText>Diadema</InfoText>
             </View>
-            <Details>Ver detalhes</Details>
+            <Details onPress={details}>Ver detalhes</Details>
           </Bottom>
         </Card>
       </View>
