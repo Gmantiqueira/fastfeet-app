@@ -21,7 +21,7 @@ export default function SignIn({navigation}) {
       />
       <Button
         style={{marginTop: 15.5, backgroundColor: '#82BF18'}}
-        onPress={loginAuth()}>
+        onPress={loginAuth}>
         Entrar no sistema
       </Button>
     </Background>

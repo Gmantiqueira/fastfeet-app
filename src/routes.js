@@ -11,7 +11,7 @@ import Profile from './pages/Profile';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function Routes() {
+function TabNavigator() {
   return (
     <Tab.Navigator
       initialRouteName="Dashboard"
@@ -42,5 +42,14 @@ export default function Routes() {
         }}
       />
     </Tab.Navigator>
+  );
+}
+
+export default function Routes() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="Dashboard" component={TabNavigator} />
+    </Stack.Navigator>
   );
 }
