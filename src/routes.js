@@ -48,10 +48,21 @@ function TabNavigator() {
 
 export default function Routes() {
   return (
-    <Stack.Navigator initialRouteName="Details">
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: 'center',
+      }}
+      initialRouteName="Details">
       <Stack.Screen
         name="SignIn"
         component={SignIn}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Problems"
+        component={TabNavigator}
         options={{
           headerShown: false,
         }}
