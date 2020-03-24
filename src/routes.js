@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Details from './pages/Details';
 import Report from './pages/Report';
 import Profile from './pages/Profile';
+import Problems from './pages/Problems';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,7 +61,7 @@ export default function Routes() {
           fontWeight: 'bold',
         },
       }}
-      initialRouteName="Report">
+      initialRouteName="Problems">
       <Stack.Screen
         name="SignIn"
         component={SignIn}
@@ -73,6 +74,13 @@ export default function Routes() {
         component={Report}
         options={{
           title: 'Informar problema',
+        }}
+      />
+      <Stack.Screen
+        name="Problems"
+        component={Problems}
+        options={{
+          title: 'Visualizar problemas',
         }}
       />
       <Stack.Screen
