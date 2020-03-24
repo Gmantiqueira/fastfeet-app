@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Details from './pages/Details';
+import Finish from './pages/Finish';
 import Report from './pages/Report';
 import Profile from './pages/Profile';
 import Problems from './pages/Problems';
@@ -61,7 +62,7 @@ export default function Routes() {
           fontWeight: 'bold',
         },
       }}
-      initialRouteName="Problems">
+      initialRouteName="SignIn">
       <Stack.Screen
         name="SignIn"
         component={SignIn}
@@ -74,6 +75,13 @@ export default function Routes() {
         component={Report}
         options={{
           title: 'Informar problema',
+        }}
+      />
+      <Stack.Screen
+        name="Finish"
+        component={Finish}
+        options={{
+          title: 'Confirmar entrega',
         }}
       />
       <Stack.Screen
