@@ -30,7 +30,6 @@ export const Card = styled.ImageBackground`
   border-radius: 4px;
   justify-content: flex-end;
   height: 90%;
-  padding: 20px;
 `;
 
 export const Camera = styled(BaseButton)`
@@ -40,10 +39,4 @@ export const Camera = styled(BaseButton)`
   justify-content: center;
   height: 61px;
   width: 61px;
-`;
-
-export const PreviewCamera = styled(RNCamera)`
-  flex: 1;
-  justify-content: flex-end;
-  align-items: center;
 `;
