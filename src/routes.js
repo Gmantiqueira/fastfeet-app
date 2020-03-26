@@ -62,7 +62,7 @@ export default function Routes() {
           fontWeight: 'bold',
         },
       }}
-      initialRouteName="SignIn">
+      initialRouteName="Finish">
       <Stack.Screen
         name="SignIn"
         component={SignIn}

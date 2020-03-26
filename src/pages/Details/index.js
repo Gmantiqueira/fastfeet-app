@@ -21,6 +21,12 @@ export default function Details({navigation}) {
   function reportProblem() {
     navigation.navigate('Report');
   }
+  function viewProblems() {
+    navigation.navigate('Problems');
+  }
+  function finishDelivery() {
+    navigation.navigate('Finish');
+  }
 
   return (
     <WhiteBackground>
@@ -79,11 +85,11 @@ export default function Details({navigation}) {
             <Icon color="#E74040" name="highlight-off" size={24} />
             <ActionInfo>Informar{'\n'}problema</ActionInfo>
           </Action>
-          <Action>
+          <Action onPress={viewProblems}>
             <Icon color="#E7BA40" name="info-outline" size={24} />
             <ActionInfo>Visualizar{'\n'}problemas</ActionInfo>
           </Action>
-          <Action>
+          <Action onPress={finishDelivery}>
             <Icon color="#7D40E7" name="alarm-on" size={24} />
             <ActionInfo>Confirmar{'\n'}entrega</ActionInfo>
           </Action>

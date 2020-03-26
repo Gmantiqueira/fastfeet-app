@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {BaseButton} from 'react-native-gesture-handler';
+import {RNCamera} from 'react-native-camera';
 
 export const WhiteBackground = styled.View`
   background-color: #fff;
@@ -39,4 +40,10 @@ export const Camera = styled(BaseButton)`
   justify-content: center;
   height: 61px;
   width: 61px;
+`;
+
+export const PreviewCamera = styled(RNCamera)`
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
 `;
