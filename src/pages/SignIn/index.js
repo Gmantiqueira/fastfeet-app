@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import Background from './styles';
 
 export default function SignIn({navigation}) {
-  function loginAuth() {
+  function handleLogin() {
     navigation.navigate('Dashboard');
   }
 
@@ -16,12 +16,15 @@ export default function SignIn({navigation}) {
     <Background>
       <Image source={Logo} />
       <Input
-        style={{marginTop: 37.5}}
         placeholder="Informe seu ID de cadastro"
+        autoCorrect={false}
+        autoCapitalize="none"
+        returnKeyType="next"
+        onSubmitEditing={handleLogin}
       />
       <Button
         style={{marginTop: 15.5, backgroundColor: '#82BF18'}}
-        onPress={loginAuth}>
+        onPress={handleLogin}>
         Entrar no sistema
       </Button>
     </Background>
