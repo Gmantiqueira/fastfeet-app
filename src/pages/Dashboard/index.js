@@ -2,6 +2,10 @@ import React, {useState} from 'react';
 import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import {useDispatch, useSelector} from 'react-redux';
+
+import {logout} from '@/store/modules/deliveryman/actions';
+
 import {
   Avatar,
   Bold,
@@ -29,10 +33,17 @@ import {
 
 export default function Dashboard({navigation}) {
   const [activeTab, setActive] = useState(0);
+  const dispatch = useDispatch();
+
+  function handleLogout() {
+    dispatch(logout());
+  }
 
   function details() {
     navigation.navigate('Details');
   }
+
+  const {name, url} = useSelector(state => state.deliveryman.profile);
 
   return (
     <Container>
@@ -41,15 +52,23 @@ export default function Dashboard({navigation}) {
           <Avatar
             source={{
               uri:
-                'https://ui-avatars.com/api/?name=Gabriel+Antiqueira&background=0D8ABC&color=fff&size=68',
+                url ||
+                'https://ui-avatars.com/api/?name=' +
+                  (name ? name.split(' ').join('+') : 'John+Doe') +
+                  '&background=0D8ABC&color=fff&size=68',
             }}
           />
           <TextWrapper>
             <Greet>Bem vindo de volta,</Greet>
-            <Bold>Gabriel Antiqueira</Bold>
+            <Bold>{name}</Bold>
           </TextWrapper>
         </Row>
-        <Icon name="exit-to-app" size={32} color="#E74040" />
+        <Icon
+          onPress={handleLogout}
+          name="exit-to-app"
+          size={32}
+          color="#E74040"
+        />
       </Header>
 
       <View>

@@ -15,7 +15,7 @@ export const Avatar = styled.Image`
 `;
 
 export const Field = styled.View`
-  margin-bottom: 15px;
+  margin-bottom: ${props => (props.last ? '30px' : '15px')};
 `;
 
 export const Label = styled.Text`

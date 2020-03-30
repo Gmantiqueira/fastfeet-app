@@ -1,36 +1,50 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+
+import {useDispatch, useSelector} from 'react-redux';
+
+import {logout} from '@/store/modules/deliveryman/actions';
 
 import {Avatar, Container, Field, InputInfo, Label} from './styles';
 import Button from '../../components/Button';
 
+import {format} from 'date-fns';
+
 export default function Profile() {
-  function logout() {
-    console.log('logout');
+  const dispatch = useDispatch();
+  function handleLogout() {
+    dispatch(logout());
   }
+
+  const {name, email, url, created_at} = useSelector(
+    state => state.deliveryman.profile,
+  );
+
   return (
     <Container>
       <Avatar
         source={{
           uri:
-            'https://ui-avatars.com/api/?name=Gabriel+Antiqueira&background=0D8ABC&color=fff&size=68',
+            url ||
+            'https://ui-avatars.com/api/?name=' +
+              (name ? name.split(' ').join('+') : 'John+Doe') +
+              '&background=0D8ABC&color=fff&size=68',
         }}
       />
       <Field>
         <Label>Nome completo</Label>
-        <InputInfo>Gabriel Antiqueira</InputInfo>
+        <InputInfo>{name}</InputInfo>
       </Field>
       <Field>
         <Label>Email</Label>
-        <InputInfo>gmantiqueira@gmail.com</InputInfo>
+        <InputInfo>{email}</InputInfo>
       </Field>
-      <Field>
+      <Field last>
         <Label>Data de cadastro</Label>
-        <InputInfo>22/03/2020</InputInfo>
+        <InputInfo>
+          {created_at ? format(new Date(created_at), 'dd/MM/yyyy') : 'N/A'}
+        </InputInfo>
       </Field>
-      <Button
-        style={{marginTop: 15, backgroundColor: '#E74040'}}
-        onPress={logout}>
+      <Button style={{backgroundColor: '#E74040'}} onPress={handleLogout}>
         Logout
       </Button>
     </Container>

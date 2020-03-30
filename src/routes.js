@@ -49,7 +49,7 @@ function TabNavigator() {
   );
 }
 
-export default function Routes() {
+export default (isSigned = false) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -62,10 +62,17 @@ export default function Routes() {
           fontWeight: 'bold',
         },
       }}
-      initialRouteName="Finish">
+      initialRouteName={isSigned === true ? 'Dashboard' : 'SignIn'}>
       <Stack.Screen
         name="SignIn"
         component={SignIn}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Dashboard"
+        component={TabNavigator}
         options={{
           headerShown: false,
         }}
@@ -92,13 +99,6 @@ export default function Routes() {
         }}
       />
       <Stack.Screen
-        name="Dashboard"
-        component={TabNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="Details"
         component={Details}
         options={{
@@ -107,4 +107,4 @@ export default function Routes() {
       />
     </Stack.Navigator>
   );
-}
+};
