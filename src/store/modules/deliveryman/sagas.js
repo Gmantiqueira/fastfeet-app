@@ -21,11 +21,14 @@ export function* login({payload}) {
 
     const profile = response.data;
 
-    yield put(loginSuccess(id, profile));
+    yield put(loginSuccess(profile));
 
     RootNavigation.navigate('Dashboard');
   } catch (err) {
-    Alert.alert('Login failure', 'Request failure. Try again.');
+    Alert.alert(
+      'Falha ao entrar no sistema.',
+      'Requisição falhou. Tente novamente mais tarde.',
+    );
     yield put(loginFailure());
   }
 }

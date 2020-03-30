@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {format} from 'date-fns';
 
 import {useDispatch, useSelector} from 'react-redux';
 
+import api from '@/services/api';
 import {logout} from '@/store/modules/deliveryman/actions';
 
 import {
@@ -33,8 +35,34 @@ import {
 
 export default function Dashboard({navigation}) {
   const [activeTab, setActive] = useState(0);
-  const dispatch = useDispatch();
 
+  const {id, name, url} = useSelector(state => state.deliveryman.profile);
+
+  const [deliveries, setDeliveries] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function loadDeliveries() {
+    setLoading(true);
+    try {
+      const {data} = await api.get(`deliveryman/${id}/deliveries`);
+
+      setDeliveries(data);
+      console.log(data);
+      setLoading(false);
+    } catch {
+      Alert.alert(
+        'Falha de requisição.',
+        'Falha ao trazer as informações das encomendas.',
+      );
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadDeliveries();
+  }, []);
+
+  const dispatch = useDispatch();
   function handleLogout() {
     dispatch(logout());
   }
@@ -42,8 +70,6 @@ export default function Dashboard({navigation}) {
   function details() {
     navigation.navigate('Details');
   }
-
-  const {name, url} = useSelector(state => state.deliveryman.profile);
 
   return (
     <Container>
@@ -83,39 +109,48 @@ export default function Dashboard({navigation}) {
             </Tab>
           </Row>
         </Row>
-        <Card>
-          <Top>
-            <TitleWrapper>
-              <Icon color="#7d40e7" name="local-shipping" size={36} />
-              <CardTitle>Encomenda 01</CardTitle>
-            </TitleWrapper>
-            <Progress>
-              <DotWrapper>
-                <ProgressLine />
-                <ProgressDot filled />
-                <ProgressDot filled />
-                <ProgressDot />
-              </DotWrapper>
-              <InfoWrapper>
-                <ProgressInfo>Aguardando retirada</ProgressInfo>
-                <ProgressInfo>Retirada</ProgressInfo>
-                <ProgressInfo>Entregue</ProgressInfo>
-              </InfoWrapper>
-            </Progress>
-          </Top>
-          <Bottom>
-            <View>
-              <InfoTitle>Data</InfoTitle>
-              <InfoText>14/01/2020</InfoText>
-            </View>
 
-            <View>
-              <InfoTitle>Cidade</InfoTitle>
-              <InfoText>Diadema</InfoText>
-            </View>
-            <Details onPress={details}>Ver detalhes</Details>
-          </Bottom>
-        </Card>
+        {deliveries.map(delivery => {
+          return (
+            <Card key={delivery.id}>
+              <Top>
+                <TitleWrapper>
+                  <Icon color="#7d40e7" name="local-shipping" size={36} />
+                  <CardTitle>Encomenda {delivery.id}</CardTitle>
+                </TitleWrapper>
+                <Progress>
+                  <DotWrapper>
+                    <ProgressLine />
+                    <ProgressDot filled />
+                    <ProgressDot filled={delivery.start_date} />
+                    <ProgressDot filled={delivery.end_date} />
+                  </DotWrapper>
+                  <InfoWrapper>
+                    <ProgressInfo>Aguardando retirada</ProgressInfo>
+                    <ProgressInfo>Retirada</ProgressInfo>
+                    <ProgressInfo>Entregue</ProgressInfo>
+                  </InfoWrapper>
+                </Progress>
+              </Top>
+              <Bottom>
+                <View>
+                  <InfoTitle>Data</InfoTitle>
+                  <InfoText>
+                    {delivery.start_date
+                      ? format(new Date(delivery.start_date), 'dd/MM/yyyy')
+                      : 'N/A'}
+                  </InfoText>
+                </View>
+
+                <View>
+                  <InfoTitle>Cidade</InfoTitle>
+                  <InfoText>{delivery.recipient.city}</InfoText>
+                </View>
+                <Details onPress={details}>Ver detalhes</Details>
+              </Bottom>
+            </Card>
+          );
+        })}
       </View>
     </Container>
   );
