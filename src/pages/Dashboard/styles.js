@@ -3,7 +3,23 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   background-color: #fff;
   flex: 1;
-  padding: 20px;
+`;
+
+export const Scroll = styled.ScrollView.attrs(
+  props =>
+    props.loading && {
+      contentContainerStyle: {justifyContent: 'center', flex: 1},
+    },
+)`
+  flex: 1;
+  padding: 0 20px;
+`;
+
+export const Tabs = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10.5px;
+  padding: 0 20px;
 `;
 
 export const Header = styled.View`
@@ -12,6 +28,8 @@ export const Header = styled.View`
   justify-content: space-between;
   height: 68px;
   margin-bottom: 22.5px;
+  margin-top: 25px;
+  padding: 20px;
 `;
 
 export const Avatar = styled.Image`

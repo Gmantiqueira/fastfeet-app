@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {ActivityIndicator, Alert, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {format} from 'date-fns';
 
@@ -27,7 +27,9 @@ import {
   ProgressInfo,
   ProgressLine,
   Row,
+  Scroll,
   Tab,
+  Tabs,
   TitleWrapper,
   Top,
   TextWrapper,
@@ -47,7 +49,6 @@ export default function Dashboard({navigation}) {
       const {data} = await api.get(`deliveryman/${id}/deliveries`);
 
       setDeliveries(data);
-      console.log(data);
       setLoading(false);
     } catch {
       Alert.alert(
@@ -67,8 +68,8 @@ export default function Dashboard({navigation}) {
     dispatch(logout());
   }
 
-  function details() {
-    navigation.navigate('Details');
+  function details(delivery) {
+    navigation.navigate('Details', delivery);
   }
 
   return (
@@ -97,19 +98,20 @@ export default function Dashboard({navigation}) {
         />
       </Header>
 
-      <View>
-        <Row style={{marginBottom: 10.5, justifyContent: 'space-between'}}>
-          <Bold>Entregas</Bold>
-          <Row>
-            <Tab onPress={() => setActive(0)} active={activeTab === 0}>
-              Pendentes
-            </Tab>
-            <Tab onPress={() => setActive(1)} active={activeTab === 1}>
-              Entregues
-            </Tab>
-          </Row>
+      <Tabs>
+        <Bold>Entregas</Bold>
+        <Row>
+          <Tab onPress={() => setActive(0)} active={activeTab === 0}>
+            Pendentes
+          </Tab>
+          <Tab onPress={() => setActive(1)} active={activeTab === 1}>
+            Entregues
+          </Tab>
         </Row>
+      </Tabs>
 
+      <Scroll loading={loading}>
+        {loading && <ActivityIndicator size="large" color="#7D40E7" />}
         {deliveries.map(delivery => {
           return (
             <Card key={delivery.id}>
@@ -138,7 +140,7 @@ export default function Dashboard({navigation}) {
                   <InfoText>
                     {delivery.start_date
                       ? format(new Date(delivery.start_date), 'dd/MM/yyyy')
-                      : 'N/A'}
+                      : '-- / -- / ----'}
                   </InfoText>
                 </View>
 
@@ -146,12 +148,17 @@ export default function Dashboard({navigation}) {
                   <InfoTitle>Cidade</InfoTitle>
                   <InfoText>{delivery.recipient.city}</InfoText>
                 </View>
-                <Details onPress={details}>Ver detalhes</Details>
+                <Details
+                  onPress={() => {
+                    details(delivery);
+                  }}>
+                  Ver detalhes
+                </Details>
               </Bottom>
             </Card>
           );
         })}
-      </View>
+      </Scroll>
     </Container>
   );
 }
