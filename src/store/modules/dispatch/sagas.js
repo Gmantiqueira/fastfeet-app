@@ -3,68 +3,45 @@ import * as RootNavigation from '@/services/navigation';
 
 import api from '@/services/api';
 
-import {
-  registerDeliverySuccess,
-  registerDeliveryFailure,
-  deleteDeliverySuccess,
-  deleteDeliveryFailure,
-  updateDeliverySuccess,
-  updateDeliveryFailure,
-} from './actions';
+import {startDeliverySuccess, startDeliveryFailure} from './actions';
 
-export function* registerDelivery({payload}) {
+export function* withdrawDelivery({payload}) {
   try {
-    const {data} = payload;
+    const {id} = payload;
 
-    yield call(api.post, 'delivery', data);
+    yield call(api.put, `/delivery/${id}/withdraw`);
 
-    toast.success('Encomenda cadastrada com sucesso!');
+    RootNavigation.navigate('Dashboard');
 
-    RootNavigation.navigate('/delivery');
-
-    yield put(registerDeliverySuccess());
+    yield put(startDeliverySuccess());
   } catch (err) {
-    toast.error('Erro ao cadastrar encomenda, verifique os dados inseridos!');
-    yield put(registerDeliveryFailure());
+    Alert.alert(
+      'Erro',
+      'Erro ao enviar informações de retirada. Tente novamente.',
+    );
+    yield put(startDeliveryFailure());
   }
 }
 
-export function* deleteDelivery({payload}) {
+export function* finishDelivery({payload}) {
   try {
-    const {data} = payload;
+    const {id, file} = payload;
 
-    yield call(api.delete, `delivery/${data}`);
+    const signatureId = yield call(api.post, 'files', file);
 
-    toast.success('Encomenda excluída com sucesso!');
+    yield call(api.put, `/delivery/${id}/finish`, {signatureId});
 
-    history.push('/delivery');
-
-    yield put(deleteDeliverySuccess());
+    yield put(startDeliverySuccess());
   } catch (err) {
-    toast.error('Erro ao excluir encomenda, tente novamente!');
-    yield put(deleteDeliveryFailure());
-  }
-}
-
-export function* updateDelivery({payload}) {
-  try {
-    const {data} = payload;
-
-    yield call(api.put, `delivery/${data.id}`, data);
-
-    toast.success('Encomenda atualizada com sucesso!');
-
-    history.push('/delivery');
-
-    yield put(updateDeliverySuccess());
-  } catch (err) {
-    toast.error('Erro ao editar encomenda, tente novamente!');
-    yield put(updateDeliveryFailure());
+    Alert.alert(
+      'Erro',
+      'Erro ao enviar informações de finalização de entrega. Tente novamente.',
+    );
+    yield put(startDeliveryFailure());
   }
 }
 
 export default all([
-  takeLatest('@delivery/REGISTER_DELIVERY_REQUEST', registerDelivery),
-  takeLatest('@delivery/DELETE_DELIVERY_REQUEST', deleteDelivery),
-  takeLatest('@delivery/UPDATE_DELIVERY_REQUEST', updateDelivery),
+  takeLatest('@dispatch/START_DELIVERY_REQUEST', withdrawDelivery),
+  takeLatest('@dispatch/START_DELIVERY_REQUEST', finishDelivery),
 ]);

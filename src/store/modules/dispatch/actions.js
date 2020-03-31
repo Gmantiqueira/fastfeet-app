@@ -1,59 +1,59 @@
-export function startDeliveryRequest(data) {
+export function startDeliveryRequest(id) {
   return {
-    type: '@delivery/START_DELIVERY_REQUEST',
-    payload: {data},
+    type: '@dispatch/START_DELIVERY_REQUEST',
+    payload: {id},
   };
 }
 
 export function startDeliverySuccess() {
   return {
-    type: '@delivery/START_DELIVERY_SUCCESS',
+    type: '@dispatch/START_DELIVERY_SUCCESS',
   };
 }
 
 export function startDeliveryFailure(data) {
   return {
-    type: '@delivery/START_DELIVERY_FAILURE',
+    type: '@dispatch/START_DELIVERY_FAILURE',
     payload: {data},
   };
 }
 
-export function deleteDeliveryRequest(data) {
+export function endDeliveryRequest(id, file) {
   return {
-    type: '@delivery/DELETE_DELIVERY_REQUEST',
+    type: '@dispatch/END_DELIVERY_REQUEST',
+    payload: {id, file},
+  };
+}
+
+export function endDeliverySuccess() {
+  return {
+    type: '@dispatch/END_DELIVERY_SUCCESS',
+  };
+}
+
+export function endDeliveryFailure(data) {
+  return {
+    type: '@dispatch/END_DELIVERY_FAILURE',
     payload: {data},
   };
 }
 
-export function deleteDeliverySuccess(data) {
+export function reportProblemRequest(data) {
   return {
-    type: '@delivery/DELETE_DELIVERY_SUCCESS',
-  };
-}
-
-export function deleteDeliveryFailure(data) {
-  return {
-    type: '@delivery/DELETE_DELIVERY_FAILURE',
+    type: '@dispatch/REPORT_PROBLEM_REQUEST',
     payload: {data},
   };
 }
 
-export function updateDeliveryRequest(data) {
+export function reportProblemSuccess() {
   return {
-    type: '@delivery/UPDATE_DELIVERY_REQUEST',
-    payload: {data},
+    type: '@dispatch/REPORT_PROBLEM_SUCCESS',
   };
 }
 
-export function updateDeliverySuccess(data) {
+export function reportProblemFailure(data) {
   return {
-    type: '@delivery/UPDATE_DELIVERY_SUCCESS',
-  };
-}
-
-export function updateDeliveryFailure(data) {
-  return {
-    type: '@delivery/UPDATE_DELIVERY_FAILURE',
+    type: '@dispatch/REPORT_PROBLEM_FAILURE',
     payload: {data},
   };
 }
