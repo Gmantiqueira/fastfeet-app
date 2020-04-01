@@ -13,11 +13,10 @@ import {
 import Button from '../../components/Button';
 
 export default function Finish() {
-  function finishDelivery() {
+  function handleFinish() {
     console.log('Finish delivery');
   }
   async function takePhoto(camera) {
-    console.log(camera);
     if (camera) {
       const options = {
         quality: 0.5,
@@ -47,18 +46,20 @@ export default function Finish() {
             captureAudio={false}
             type={RNCamera.Constants.Type.back}
             androidCameraPermissionOptions={{
-              title: 'Permission to use camera',
-              message: 'We need your permission to use your camera',
-              buttonPositive: 'Ok',
-              buttonNegative: 'Cancel',
+              title: 'Permissão para usar a câmera',
+              message:
+                'Nós precisamos de sua permissão para habilitar a câmera.',
+              buttonPositive: 'Habilitar',
+              buttonNegative: 'Cancelar',
             }}
             androidRecordAudioPermissionOptions={{
-              title: 'Permission to use audio recording',
-              message: 'We need your permission to use your audio',
-              buttonPositive: 'Ok',
-              buttonNegative: 'Cancel',
+              title: 'Permissão para usar gravação de áudio',
+              message:
+                'Nós precisamos de sua permissão para habilitar a gravação de áudio.',
+              buttonPositive: 'Habilitar',
+              buttonNegative: 'Cancelar',
             }}>
-            {({camera, status, recordAudioPermissionStatus}) => {
+            {({camera}) => {
               return (
                 <Camera onPress={() => takePhoto(camera)}>
                   <Icon color="#fff" name="camera-alt" size={36} />
@@ -69,7 +70,7 @@ export default function Finish() {
         </Card>
         <Button
           style={{marginTop: 11, backgroundColor: '#7D40E7'}}
-          onPress={finishDelivery}>
+          onPress={handleFinish}>
           Enviar
         </Button>
       </Container>

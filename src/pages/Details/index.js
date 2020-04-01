@@ -22,7 +22,7 @@ export default function Details({route, navigation}) {
   const delivery = route.params;
 
   function reportProblem() {
-    navigation.navigate('Report');
+    navigation.navigate('Report', delivery.id);
   }
   function viewProblems() {
     navigation.navigate('Problems', delivery.id);

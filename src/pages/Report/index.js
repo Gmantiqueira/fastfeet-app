@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
+
+import {useDispatch} from 'react-redux';
+import {reportProblemRequest} from '@/store/modules/dispatch/actions';
 
 import {
   Card,
@@ -9,9 +12,11 @@ import {
 } from './styles';
 import Button from '../../components/Button';
 
-export default function Report() {
-  function reportProblem() {
-    console.log('report problem');
+export default function Report({route}) {
+  const id = route.params;
+  const [description, setDescription] = useState('');
+  function handleReport() {
+    dispatch(reportProblemRequest(id, description));
   }
   return (
     <WhiteBackground>
@@ -19,14 +24,20 @@ export default function Report() {
       <Container>
         <Card>
           <Textarea
+            autoCapitalize="none"
+            autoCorrect={false}
             multiline={true}
             placeholder="Inclua aqui o problema que ocorreu na entrega."
+            onChangeText={setDescription}
+            onSubmitEditing={handleReport}
+            returnKeyType="send"
             textAlignVertical="top"
+            value={description}
           />
         </Card>
         <Button
           style={{marginTop: 15.5, backgroundColor: '#7D40E7'}}
-          onPress={reportProblem}>
+          onPress={handleReport}>
           Enviar
         </Button>
       </Container>

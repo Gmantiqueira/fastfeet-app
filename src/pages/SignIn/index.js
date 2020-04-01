@@ -12,12 +12,14 @@ import Background from './styles';
 
 export default function SignIn() {
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.deliveryman.loading);
+  const [loading, setLoading] = useState(false);
 
   const [id, setId] = useState('');
 
   function handleLogin() {
+    setLoading(true);
     dispatch(loginRequest(id));
+    setLoading(false);
   }
 
   return (
