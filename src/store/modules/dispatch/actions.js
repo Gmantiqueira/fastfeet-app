@@ -38,10 +38,10 @@ export function endDeliveryFailure(data) {
   };
 }
 
-export function reportProblemRequest(data) {
+export function reportProblemRequest(id, description) {
   return {
     type: '@dispatch/REPORT_PROBLEM_REQUEST',
-    payload: {data},
+    payload: {id, description},
   };
 }
 
