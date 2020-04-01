@@ -18,22 +18,22 @@ export function startDeliveryFailure(data) {
   };
 }
 
-export function endDeliveryRequest(id, file) {
+export function finishDeliveryRequest(id, file) {
   return {
-    type: '@dispatch/END_DELIVERY_REQUEST',
+    type: '@dispatch/FINISH_DELIVERY_REQUEST',
     payload: {id, file},
   };
 }
 
-export function endDeliverySuccess() {
+export function finishDeliverySuccess() {
   return {
-    type: '@dispatch/END_DELIVERY_SUCCESS',
+    type: '@dispatch/FINISH_DELIVERY_SUCCESS',
   };
 }
 
-export function endDeliveryFailure(data) {
+export function finishDeliveryFailure(data) {
   return {
-    type: '@dispatch/END_DELIVERY_FAILURE',
+    type: '@dispatch/FINISH_DELIVERY_FAILURE',
     payload: {data},
   };
 }
@@ -54,6 +54,26 @@ export function reportProblemSuccess() {
 export function reportProblemFailure(data) {
   return {
     type: '@dispatch/REPORT_PROBLEM_FAILURE',
+    payload: {data},
+  };
+}
+
+export function cancelDeliveryRequest(id) {
+  return {
+    type: '@dispatch/CANCEL_DELIVERY_REQUEST',
+    payload: {id},
+  };
+}
+
+export function cancelDeliverySuccess() {
+  return {
+    type: '@dispatch/CANCEL_DELIVERY_SUCCESS',
+  };
+}
+
+export function cancelDeliveryFailure(data) {
+  return {
+    type: '@dispatch/CANCEL_DELIVERY_FAILURE',
     payload: {data},
   };
 }

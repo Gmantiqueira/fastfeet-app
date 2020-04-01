@@ -6,8 +6,8 @@ import api from '@/services/api';
 import {
   startDeliverySuccess,
   startDeliveryFailure,
-  endDeliverySuccess,
-  endDeliveryFailure,
+  finishDeliverySuccess,
+  finishDeliveryFailure,
   reportProblemSuccess,
   reportProblemFailure,
 } from './actions';
@@ -40,13 +40,13 @@ export function* finishDelivery({payload}) {
 
     // yield call(api.put, `/delivery/${id}/finish`, {signatureId});
 
-    yield put(endDeliverySuccess());
+    yield put(finishDeliverySuccess());
   } catch (err) {
     Alert.alert(
       'Erro',
       'Erro ao enviar informações de finalização de entrega. Tente novamente.',
     );
-    yield put(endDeliveryFailure());
+    yield put(finishDeliveryFailure());
   }
 }
 
@@ -54,19 +54,37 @@ export function* reportProblem({payload}) {
   try {
     const {id, description} = payload;
 
-    yield call(api.put, `/delivery/${id}/problems`, {description});
+    yield call(api.post, `delivery/${id}/problems`, {description});
 
-    yield put(endDeliverySuccess());
+    yield put(reportProblemSuccess());
   } catch (err) {
     Alert.alert(
       'Erro',
-      'Erro ao enviar informações de finalização de entrega. Tente novamente.',
+      'Erro ao enviar informações ao reportar problema. Tente novamente.',
     );
-    yield put(endDeliveryFailure());
+    yield put(reportProblemFailure());
+  }
+}
+
+export function* cancelDelivery({payload}) {
+  try {
+    const {id} = payload;
+
+    yield call(api.put, `problem/${id}/cancel-delivery`);
+
+    yield put(reportProblemSuccess());
+  } catch (err) {
+    Alert.alert(
+      'Erro',
+      'Erro ao enviar informações ao cancelar encomenda. Tente novamente.',
+    );
+    yield put(reportProblemFailure());
   }
 }
 
 export default all([
   takeLatest('@dispatch/START_DELIVERY_REQUEST', withdrawDelivery),
-  takeLatest('@dispatch/END_DELIVERY_REQUEST', finishDelivery),
+  takeLatest('@dispatch/FINISH_DELIVERY_REQUEST', finishDelivery),
+  takeLatest('@dispatch/REPORT_PROBLEM_REQUEST', reportProblem),
+  takeLatest('@dispatch/CANCEL_DELIVERY_REQUEST', cancelDelivery),
 ]);
