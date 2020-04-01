@@ -31,6 +31,7 @@ export default function SignIn() {
         onSubmitEditing={handleLogin}
         value={id}
         onChangeText={setId}
+        keyboardType="numeric"
       />
       <Button
         loading={loading}
