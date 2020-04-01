@@ -19,11 +19,13 @@ import {
 } from './styles';
 
 export default function Details({route, navigation}) {
+  const delivery = route.params;
+
   function reportProblem() {
     navigation.navigate('Report');
   }
   function viewProblems() {
-    navigation.navigate('Problems');
+    navigation.navigate('Problems', delivery.id);
   }
   function withdrawDelivery() {
     Alert.alert(
@@ -39,8 +41,6 @@ export default function Details({route, navigation}) {
   function finishDelivery() {
     navigation.navigate('Finish');
   }
-
-  const delivery = route.params;
 
   let type = 'Pendente';
   if (delivery.start_date) {

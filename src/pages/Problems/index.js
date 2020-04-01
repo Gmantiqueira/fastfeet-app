@@ -1,52 +1,78 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import {format} from 'date-fns';
+
+import {useDispatch, useSelector} from 'react-redux';
+import {cancelDelivery} from '@/store/modules/dispatch/actions';
 
 import {
   Card,
   CardDescription,
   CardDate,
-  Container,
+  Scroll,
   Title,
   PurpleBackground,
   WhiteBackground,
 } from './styles';
 
-export default function Problems() {
+export default function Problems({route}) {
+  const id = route.params;
+
+  const [problems, setProblems] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function loadProblems() {
+    setLoading(true);
+    try {
+      const {data} = await api.get(`delivery/${id}/problems`);
+
+      setProblems(data);
+      setLoading(false);
+    } catch {
+      Alert.alert(
+        'Erro',
+        'Falha ao trazer as informações dos problemas da encomenda.',
+      );
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadProblems();
+  }, []);
+
+  const dispatch = useDispatch();
+  function handleCancel() {
+    dispatch(cancelDelivery(id));
+  }
+
   return (
     <WhiteBackground>
       <PurpleBackground />
-      <Container>
+      <View>
         <Title>Encomenda 01</Title>
-        <Card>
-          <CardDescription>Destinatário ausente</CardDescription>
-          <CardDate>14/01/2020</CardDate>
-        </Card>
-        <Card>
-          <CardDescription>Destinatário ausente</CardDescription>
-          <CardDate>14/01/2020</CardDate>
-        </Card>
-        <Card>
-          <CardDescription>Destinatário ausente</CardDescription>
-          <CardDate>14/01/2020</CardDate>
-        </Card>
-        <Card>
-          <CardDescription>Destinatário ausente</CardDescription>
-          <CardDate>14/01/2020</CardDate>
-        </Card>
-        <Card>
-          <CardDescription>Destinatário ausente</CardDescription>
-          <CardDate>14/01/2020</CardDate>
-        </Card>
-        <Card>
-          <CardDescription>Destinatário ausente</CardDescription>
-          <CardDate>14/01/2020</CardDate>
-        </Card>
-        <Card>
-          <CardDescription>Destinatário ausente</CardDescription>
-          <CardDate>14/01/2020</CardDate>
-        </Card>
-      </Container>
+        <Scroll loading={loading}>
+          {loading && <ActivityIndicator size="large" color="#7D40E7" />}
+          {problems.map(problem => {
+            return (
+              <Card>
+                <CardDescription>{problem.description}</CardDescription>
+                <CardDate>
+                  {problem.created_at
+                    ? format(new Date(problem.created_at), 'dd/MM/yyyy')
+                    : '-- / -- / ----'}
+                </CardDate>
+              </Card>
+            );
+          })}
+        </Scroll>
+        <Button
+          style={{marginTop: 15.5, backgroundColor: '#E74040'}}
+          onPress={handleCancel}>
+          Cancelar encomenda
+        </Button>
+      </View>
     </WhiteBackground>
   );
 }

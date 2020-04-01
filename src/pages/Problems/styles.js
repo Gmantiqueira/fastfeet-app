@@ -17,8 +17,14 @@ export const PurpleBackground = styled.View`
   z-index: -1;
 `;
 
-export const Container = styled.View`
-  padding: 20px;
+export const Scroll = styled.ScrollView.attrs(
+  props =>
+    props.loading && {
+      contentContainerStyle: {justifyContent: 'center', flex: 1},
+    },
+)`
+  flex: 1;
+  padding: 0 20px;
 `;
 
 export const Title = styled.Text`
@@ -27,6 +33,7 @@ export const Title = styled.Text`
   font-weight: bold;
   line-height: 24px;
   margin-bottom: 12px;
+  padding-top: 20px;
   text-align: center;
 `;
 
