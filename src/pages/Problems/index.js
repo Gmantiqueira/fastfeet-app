@@ -3,7 +3,7 @@ import {View} from 'react-native';
 
 import {format} from 'date-fns';
 
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {cancelDelivery} from '@/store/modules/dispatch/actions';
 
 import {
@@ -51,7 +51,7 @@ export default function Problems({route}) {
     <WhiteBackground>
       <PurpleBackground />
       <View>
-        <Title>Encomenda 01</Title>
+        <Title>Encomenda {id >= 10 ? id : `0${id}`}</Title>
         <Scroll loading={loading}>
           {loading && <ActivityIndicator size="large" color="#7D40E7" />}
           {problems.map(problem => {
