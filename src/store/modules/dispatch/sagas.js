@@ -1,6 +1,8 @@
 import {takeLatest, call, put, all} from 'redux-saga/effects';
 import * as RootNavigation from '@/services/navigation';
 
+import {Alert} from 'react-native';
+
 import api from '@/services/api';
 
 import {
@@ -56,8 +58,10 @@ export function* reportProblem({payload}) {
 
     yield call(api.post, `delivery/${id}/problems`, {description});
 
+    RootNavigation.goBack();
     yield put(reportProblemSuccess());
   } catch (err) {
+    console.log(err);
     Alert.alert(
       'Erro',
       'Erro ao enviar informações ao reportar problema. Tente novamente.',

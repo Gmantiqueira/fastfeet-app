@@ -16,6 +16,7 @@ import {
   CardTitle,
   Container,
   Details,
+  DetailsText,
   DotWrapper,
   Greet,
   Header,
@@ -38,7 +39,7 @@ import {
 export default function Dashboard({navigation}) {
   const [activeTab, setActive] = useState(0);
 
-  const {id, name, url} = useSelector(state => state.deliveryman.profile);
+  const {id, name, url} = useSelector((state) => state.deliveryman.profile);
 
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -112,7 +113,7 @@ export default function Dashboard({navigation}) {
 
       <Scroll loading={loading}>
         {loading && <ActivityIndicator size="large" color="#7D40E7" />}
-        {deliveries.map(delivery => {
+        {deliveries.map((delivery) => {
           return (
             <Card key={delivery.id}>
               <Top>
@@ -152,7 +153,7 @@ export default function Dashboard({navigation}) {
                   onPress={() => {
                     details(delivery);
                   }}>
-                  Ver detalhes
+                  <DetailsText>Ver detalhes</DetailsText>
                 </Details>
               </Bottom>
             </Card>

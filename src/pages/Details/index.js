@@ -1,6 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import {Alert} from 'react-native';
+
 import {format} from 'date-fns';
 
 import {
@@ -122,7 +124,7 @@ export default function Details({route, navigation}) {
             <Icon color="#E7BA40" name="info-outline" size={24} />
             <ActionInfo>Visualizar{'\n'}problemas</ActionInfo>
           </Action>
-          {delivery.start_date && !delivery.end_date ? (
+          {!delivery.start_date && !delivery.end_date ? (
             <Action onPress={withdrawDelivery}>
               <Icon color="#7D40E7" name="local-shipping" size={24} />
               <ActionInfo>Retirar{'\n'}entrega</ActionInfo>

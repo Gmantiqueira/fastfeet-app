@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import {BaseButton} from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   background-color: #fff;
@@ -70,9 +71,8 @@ export const Tab = styled.Text`
 `;
 
 export const Card = styled.View`
-  border: 1px solid black;
   border-radius: 4px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  elevation: 2;
   font-weight: bold;
   margin-bottom: 32px;
   width: 100%;
@@ -140,6 +140,7 @@ export const Bottom = styled.View`
   background: #f8f9fd;
   flex-direction: row;
   justify-content: space-between;
+  margin: 1px;
   padding: 18.5px;
 `;
 
@@ -155,9 +156,14 @@ export const InfoText = styled.Text`
   font-weight: bold;
 `;
 
-export const Details = styled.Text`
+export const Details = styled(BaseButton)`
   background: transparent;
   border: 0;
+  height: 24px;
+  justify-content: center;
+`;
+
+export const DetailsText = styled.Text`
   color: #7d40e7;
   font-size: 12px;
   font-weight: bold;

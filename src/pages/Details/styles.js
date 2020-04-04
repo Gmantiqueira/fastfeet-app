@@ -24,8 +24,8 @@ export const Container = styled.View`
 
 export const Card = styled.View`
   background-color: #fff;
-  border: 1px solid black;
   border-radius: 4px;
+  elevation: 2;
   margin-bottom: 10px;
   padding: 14px;
 `;
@@ -66,6 +66,7 @@ export const FieldInfo = styled.Text`
 export const Action = styled(BaseButton)`
   align-items: center;
   flex: 1;
+  min-height: 83px;
   justify-content: center;
   padding: 15px 0;
 `;
@@ -79,6 +80,7 @@ export const ActionInfo = styled.Text`
 
 export const Actions = styled.View`
   background: #f8f9fd;
+  elevation: 1;
   flex-direction: row;
   justify-content: space-between;
 `;

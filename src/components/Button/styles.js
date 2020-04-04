@@ -4,6 +4,7 @@ import {BaseButton} from 'react-native-gesture-handler';
 export const Container = styled(BaseButton)`
   border-radius: 4px;
   height: 45px;
+  max-width: 100%;
   width: 100%;
 
   align-items: center;

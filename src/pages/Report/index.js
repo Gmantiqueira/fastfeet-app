@@ -14,6 +14,7 @@ import Button from '../../components/Button';
 
 export default function Report({route}) {
   const id = route.params;
+  const dispatch = useDispatch();
   const [description, setDescription] = useState('');
   function handleReport() {
     dispatch(reportProblemRequest(id, description));

@@ -49,7 +49,8 @@ function TabNavigator() {
   );
 }
 
-export default (isSigned = false) => {
+function StackNavigator({isSigned = false}) {
+  console.log((isSigned = false));
   return (
     <Stack.Navigator
       screenOptions={{
@@ -107,4 +108,8 @@ export default (isSigned = false) => {
       />
     </Stack.Navigator>
   );
+}
+
+export default ({isSigned = false}) => {
+  return <StackNavigator isSigned={isSigned} />;
 };

@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
+import {BaseButton} from 'react-native-gesture-handler';
 
-export const WhiteBackground = styled.ScrollView`
+export const WhiteBackground = styled.View`
   background-color: #fff;
-  height: 100%;
+  flex: 1;
   position: relative;
   z-index: 0;
 `;
@@ -37,15 +38,22 @@ export const Title = styled.Text`
   text-align: center;
 `;
 
-export const Card = styled.View`
+export const Container = styled.View`
+  flex: 1;
+  justify-content: space-between;
+`;
+
+export const Card = styled(BaseButton)`
   align-items: center;
   background: #fff;
-  border: 1px solid black;
   border-radius: 4px;
+  elevation: 3;
   flex-direction: row;
+  height: 55px;
   justify-content: space-between;
+  margin: 1px;
   margin-bottom: 16px;
-  padding: 18px 10px 18px 20px;
+  padding: 0px 10px 0px 20px;
 `;
 
 export const CardDescription = styled.Text`
