@@ -1,6 +1,10 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import {useDispatch} from 'react-redux';
+
+import {startDeliveryRequest} from '@/store/modules/dispatch/actions';
+
 import {Alert} from 'react-native';
 
 import {format} from 'date-fns';
@@ -21,21 +25,35 @@ import {
 } from './styles';
 
 export default function Details({route, navigation}) {
-  const delivery = route.params;
+  const {
+    id,
+    start_date,
+    signature,
+    canceled_at,
+    recipient,
+    product,
+    end_date,
+  } = route.params;
 
   function reportProblem() {
-    navigation.navigate('Report', delivery.id);
+    navigation.navigate('Report', id);
   }
   function viewProblems() {
-    navigation.navigate('Problems', delivery.id);
+    navigation.navigate('Problems', id);
   }
+
+  const dispatch = useDispatch();
+
   function withdrawDelivery() {
     Alert.alert(
       'Retirada',
       'Deseja confirmar a retirada da entrega?',
       [
         {text: 'Não', style: 'cancel'},
-        {text: 'Sim', onPress: () => console.log('Dispatch da entrega')},
+        {
+          text: 'Sim',
+          onPress: () => dispatch(startDeliveryRequest(id)),
+        },
       ],
       {cancelable: false},
     );
@@ -45,13 +63,13 @@ export default function Details({route, navigation}) {
   }
 
   let type = 'Pendente';
-  if (delivery.start_date) {
+  if (start_date) {
     type = 'Retirada';
   }
-  if (delivery.signature) {
+  if (signature) {
     type = 'Entregue';
   }
-  if (delivery.canceled_at) {
+  if (canceled_at) {
     type = 'Cancelada';
   }
 
@@ -67,21 +85,21 @@ export default function Details({route, navigation}) {
           <Row>
             <Field>
               <Label>Destinatário</Label>
-              <FieldInfo>{delivery.recipient.name}</FieldInfo>
+              <FieldInfo>{recipient.name}</FieldInfo>
             </Field>
           </Row>
           <Row>
             <Field>
               <Label>Endereço de entrega</Label>
               <FieldInfo>
-                {`${delivery.recipient.street}, ${delivery.recipient.number}, ${delivery.recipient.city} - ${delivery.recipient.state}, ${delivery.recipient.zip_code}`}
+                {`${recipient.street}, ${recipient.number}, ${recipient.city} - ${recipient.state}, ${recipient.zip_code}`}
               </FieldInfo>
             </Field>
           </Row>
           <Row>
             <Field>
               <Label>Produto</Label>
-              <FieldInfo>{delivery.product}</FieldInfo>
+              <FieldInfo>{product}</FieldInfo>
             </Field>
           </Row>
         </Card>
@@ -100,16 +118,16 @@ export default function Details({route, navigation}) {
             <Field>
               <Label>Data de retirada</Label>
               <FieldInfo>
-                {delivery.start_date
-                  ? format(new Date(delivery.start_date), 'dd/MM/yyyy')
+                {start_date
+                  ? format(new Date(start_date), 'dd/MM/yyyy')
                   : '-- / -- / ----'}
               </FieldInfo>
             </Field>
             <Field>
               <Label>Data de entrega</Label>
               <FieldInfo>
-                {delivery.end_date
-                  ? format(new Date(delivery.end_date), 'dd/MM/yyyy')
+                {end_date
+                  ? format(new Date(end_date), 'dd/MM/yyyy')
                   : '-- / -- / ----'}
               </FieldInfo>
             </Field>
@@ -124,7 +142,7 @@ export default function Details({route, navigation}) {
             <Icon color="#E7BA40" name="info-outline" size={24} />
             <ActionInfo>Visualizar{'\n'}problemas</ActionInfo>
           </Action>
-          {!delivery.start_date && !delivery.end_date ? (
+          {!start_date && !end_date ? (
             <Action onPress={withdrawDelivery}>
               <Icon color="#7D40E7" name="local-shipping" size={24} />
               <ActionInfo>Retirar{'\n'}entrega</ActionInfo>
