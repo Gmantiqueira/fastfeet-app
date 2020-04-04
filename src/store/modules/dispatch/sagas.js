@@ -61,26 +61,9 @@ export function* reportProblem({payload}) {
     RootNavigation.goBack();
     yield put(reportProblemSuccess());
   } catch (err) {
-    console.log(err);
     Alert.alert(
       'Erro',
       'Erro ao enviar informações ao reportar problema. Tente novamente.',
-    );
-    yield put(reportProblemFailure());
-  }
-}
-
-export function* cancelDelivery({payload}) {
-  try {
-    const {id} = payload;
-
-    yield call(api.put, `problem/${id}/cancel-delivery`);
-
-    yield put(reportProblemSuccess());
-  } catch (err) {
-    Alert.alert(
-      'Erro',
-      'Erro ao enviar informações ao cancelar encomenda. Tente novamente.',
     );
     yield put(reportProblemFailure());
   }
@@ -90,5 +73,4 @@ export default all([
   takeLatest('@dispatch/START_DELIVERY_REQUEST', withdrawDelivery),
   takeLatest('@dispatch/FINISH_DELIVERY_REQUEST', finishDelivery),
   takeLatest('@dispatch/REPORT_PROBLEM_REQUEST', reportProblem),
-  takeLatest('@dispatch/CANCEL_DELIVERY_REQUEST', cancelDelivery),
 ]);

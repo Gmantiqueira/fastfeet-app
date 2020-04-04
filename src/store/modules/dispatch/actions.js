@@ -57,23 +57,3 @@ export function reportProblemFailure(data) {
     payload: {data},
   };
 }
-
-export function cancelDeliveryRequest(id) {
-  return {
-    type: '@dispatch/CANCEL_DELIVERY_REQUEST',
-    payload: {id},
-  };
-}
-
-export function cancelDeliverySuccess() {
-  return {
-    type: '@dispatch/CANCEL_DELIVERY_SUCCESS',
-  };
-}
-
-export function cancelDeliveryFailure(data) {
-  return {
-    type: '@dispatch/CANCEL_DELIVERY_FAILURE',
-    payload: {data},
-  };
-}

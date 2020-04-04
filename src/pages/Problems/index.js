@@ -3,10 +3,6 @@ import {ActivityIndicator, Alert} from 'react-native';
 
 import {format} from 'date-fns';
 
-import {useDispatch} from 'react-redux';
-import {cancelDelivery} from '@/store/modules/dispatch/actions';
-import Button from '@/components/Button';
-
 import api from '@/services/api';
 
 import {
@@ -57,11 +53,6 @@ export default function Problems({route}) {
     loadProblems();
   }, []);
 
-  const dispatch = useDispatch();
-  function handleCancel() {
-    dispatch(cancelDelivery(id));
-  }
-
   return (
     <WhiteBackground>
       <PurpleBackground />
@@ -86,18 +77,6 @@ export default function Problems({route}) {
             );
           })}
         </Scroll>
-        <Button
-          style={{
-            marginBottom: 15.5,
-            marginTop: 15.5,
-            marginLeft: 20,
-            marginRight: 20,
-            backgroundColor: '#E74040',
-            width: 'auto',
-          }}
-          onPress={handleCancel}>
-          Cancelar encomenda
-        </Button>
       </Container>
     </WhiteBackground>
   );
