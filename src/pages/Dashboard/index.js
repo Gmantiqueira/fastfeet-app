@@ -73,6 +73,13 @@ export default function Dashboard({navigation}) {
     navigation.navigate('Details', delivery);
   }
 
+  const truncateString = (string, characters) => {
+    const text = string.replace(/(\r\n|\n|\r)/gm, '');
+    return text.length > characters
+      ? `${text.substring(0, characters)}...`
+      : text;
+  };
+
   return (
     <Container>
       <Header>
@@ -119,7 +126,7 @@ export default function Dashboard({navigation}) {
               <Top>
                 <TitleWrapper>
                   <Icon color="#7d40e7" name="local-shipping" size={36} />
-                  <CardTitle>Encomenda {delivery.id}</CardTitle>
+                  <CardTitle>{truncateString(delivery.product, 35)}</CardTitle>
                 </TitleWrapper>
                 <Progress>
                   <DotWrapper>
@@ -147,7 +154,9 @@ export default function Dashboard({navigation}) {
 
                 <View>
                   <InfoTitle>Cidade</InfoTitle>
-                  <InfoText>{delivery.recipient.city}</InfoText>
+                  <InfoText>
+                    {truncateString(delivery.recipient.city, 10)}
+                  </InfoText>
                 </View>
                 <Details
                   onPress={() => {

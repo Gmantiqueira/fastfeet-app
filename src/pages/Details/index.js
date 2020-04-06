@@ -59,7 +59,7 @@ export default function Details({route, navigation}) {
     );
   }
   function finishDelivery() {
-    navigation.navigate('Finish');
+    navigation.navigate('Finish', id);
   }
 
   let type = 'Pendente';
@@ -133,27 +133,29 @@ export default function Details({route, navigation}) {
             </Field>
           </Row>
         </Card>
-        <Actions>
-          <Action onPress={reportProblem}>
-            <Icon color="#E74040" name="highlight-off" size={24} />
-            <ActionInfo>Informar{'\n'}problema</ActionInfo>
-          </Action>
-          <Action onPress={viewProblems}>
-            <Icon color="#E7BA40" name="info-outline" size={24} />
-            <ActionInfo>Visualizar{'\n'}problemas</ActionInfo>
-          </Action>
-          {!start_date && !end_date ? (
-            <Action onPress={withdrawDelivery}>
-              <Icon color="#7D40E7" name="local-shipping" size={24} />
-              <ActionInfo>Retirar{'\n'}entrega</ActionInfo>
+        {!end_date && (
+          <Actions>
+            <Action onPress={reportProblem}>
+              <Icon color="#E74040" name="highlight-off" size={24} />
+              <ActionInfo>Informar{'\n'}problema</ActionInfo>
             </Action>
-          ) : (
-            <Action onPress={finishDelivery}>
-              <Icon color="#7D40E7" name="alarm-on" size={24} />
-              <ActionInfo>Confirmar{'\n'}entrega</ActionInfo>
+            <Action onPress={viewProblems}>
+              <Icon color="#E7BA40" name="info-outline" size={24} />
+              <ActionInfo>Visualizar{'\n'}problemas</ActionInfo>
             </Action>
-          )}
-        </Actions>
+            {!start_date && !end_date ? (
+              <Action onPress={withdrawDelivery}>
+                <Icon color="#7D40E7" name="local-shipping" size={24} />
+                <ActionInfo>Retirar{'\n'}entrega</ActionInfo>
+              </Action>
+            ) : (
+              <Action onPress={finishDelivery}>
+                <Icon color="#7D40E7" name="alarm-on" size={24} />
+                <ActionInfo>Confirmar{'\n'}entrega</ActionInfo>
+              </Action>
+            )}
+          </Actions>
+        )}
       </Container>
     </WhiteBackground>
   );

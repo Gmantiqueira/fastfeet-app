@@ -37,24 +37,26 @@ export function* withdrawDelivery({payload}) {
 
 export function* finishDelivery({payload}) {
   try {
-    const {id, fileUri} = payload;
+    const {id, file} = payload;
 
     const data = new FormData();
-    data.append('name', 'testName'); // you can append anyone.
     data.append('file', {
-      uri: fileUri,
-      type: 'image/jpeg', // or photo.type
-      name: 'testPhotoName',
+      uri: file.uri,
+      name: `signature_${id}.jpg`,
+      type: 'image/jpg',
     });
-
-    console.log(payload);
 
     const signatureId = yield call(api.post, 'files', data);
 
-    // yield call(api.put, `/delivery/${id}/finish`, {signatureId});
+    yield call(api.put, `delivery/${id}/finish`, {
+      signatureId: signatureId.data.id,
+    });
 
     yield put(finishDeliverySuccess());
+    Alert.alert('Sucesso', 'Encomenda entregue com sucesso!');
+    RootNavigation.navigate('Dashboard');
   } catch (err) {
+    console.log('err', err);
     Alert.alert(
       'Erro',
       'Erro ao enviar informações de finalização de entrega. Tente novamente.',

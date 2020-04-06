@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RNCamera} from 'react-native-camera';
+import {useDispatch} from 'react-redux';
+import {finishDeliveryRequest} from '@/store/modules/dispatch/actions';
 
 import {
   Camera,
@@ -12,9 +14,11 @@ import {
 } from './styles';
 import Button from '../../components/Button';
 
-export default function Finish() {
+export default function Finish({route}) {
+  const dispatch = useDispatch();
+  const deliveryId = route.params;
   function handleFinish() {
-    console.log('Finish delivery');
+    dispatch(finishDeliveryRequest(deliveryId, fileData));
   }
   async function takePhoto(camera) {
     if (camera) {
@@ -25,11 +29,14 @@ export default function Finish() {
         pauseAfterCapture: true,
       };
       const data = await camera.takePictureAsync(options);
+      setFileData(data);
       setPreview(data.uri);
     }
   }
 
+  const [fileData, setFileData] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [cameraReady, setCameraReady] = useState(false);
 
   return (
     <WhiteBackground>
@@ -42,7 +49,13 @@ export default function Finish() {
               'https://http2.mlstatic.com/10-caixas-papelo-tipo-2-original-correios-jogos-rio-2016-D_NQ_NP_300501-MLB20340448789_072015-F.jpg',
           }}>
           <RNCamera
-            style={{flex: 1, justifyContent: 'flex-end', paddingBottom: 20}}
+            onCameraReady={() => setCameraReady(true)}
+            style={{
+              display: cameraReady ? 'flex' : 'none',
+              flex: 1,
+              justifyContent: 'flex-end',
+              paddingBottom: 20,
+            }}
             captureAudio={false}
             type={RNCamera.Constants.Type.back}
             androidCameraPermissionOptions={{
