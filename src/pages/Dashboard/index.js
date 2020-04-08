@@ -39,12 +39,13 @@ import {
 export default function Dashboard({navigation}) {
   const [activeTab, setActive] = useState(0);
 
-  const {id, name, url} = useSelector((state) => state.deliveryman.profile);
+  const {id, name, url} = useSelector(state => state.deliveryman.profile);
 
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function loadDeliveries() {
+    console.log('carregou');
     setLoading(true);
     try {
       const {data} = await api.get(`deliveryman/${id}/deliveries`);
@@ -120,7 +121,7 @@ export default function Dashboard({navigation}) {
 
       <Scroll loading={loading}>
         {loading && <ActivityIndicator size="large" color="#7D40E7" />}
-        {deliveries.map((delivery) => {
+        {deliveries.map(delivery => {
           return (
             <Card key={delivery.id}>
               <Top>

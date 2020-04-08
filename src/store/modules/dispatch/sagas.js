@@ -17,11 +17,17 @@ import {
 export function* withdrawDelivery({payload}) {
   try {
     const {id} = payload;
-    const deliverymanId = yield select((state) => state.deliveryman.profile.id);
+    const deliverymanId = yield select(state => state.deliveryman.profile.id);
 
-    yield call(api.put, `delivery/${id}/withdraw`, {
+    const {data} = yield call(api.put, `delivery/${id}/withdraw`, {
       deliverymanId,
     });
+
+    if (data.error) {
+      yield put(startDeliveryFailure());
+      Alert.alert('Erro', data.error);
+      return;
+    }
 
     yield put(startDeliverySuccess());
 
