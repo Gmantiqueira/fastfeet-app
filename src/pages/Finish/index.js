@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RNCamera} from 'react-native-camera';
 import {useDispatch} from 'react-redux';
+import {Alert} from 'react-native';
 import {finishDeliveryRequest} from '@/store/modules/dispatch/actions';
 
 import {
   Camera,
   Card,
   Container,
-  PreviewCamera,
   PurpleBackground,
   WhiteBackground,
 } from './styles';
@@ -18,6 +18,12 @@ export default function Finish({route}) {
   const dispatch = useDispatch();
   const deliveryId = route.params;
   function handleFinish() {
+    if (!data.uri) {
+      Alert.alert(
+        '',
+        'Não é possível finalizar a entrega sem a imagem da assinatura. Tire a foto e tente novamente.',
+      );
+    }
     dispatch(finishDeliveryRequest(deliveryId, fileData));
   }
   async function takePhoto(camera) {
@@ -27,6 +33,7 @@ export default function Finish({route}) {
         base64: true,
         captureAudio: false,
         pauseAfterCapture: true,
+        orientation: 'portrait',
       };
       const data = await camera.takePictureAsync(options);
       setFileData(data);
@@ -44,17 +51,17 @@ export default function Finish({route}) {
       <Container>
         <Card
           source={{
-            uri:
-              preview ||
-              'https://http2.mlstatic.com/10-caixas-papelo-tipo-2-original-correios-jogos-rio-2016-D_NQ_NP_300501-MLB20340448789_072015-F.jpg',
+            uri: preview,
           }}>
           <RNCamera
             onCameraReady={() => setCameraReady(true)}
             style={{
+              alignItems: 'center',
               display: cameraReady ? 'flex' : 'none',
               flex: 1,
               justifyContent: 'flex-end',
               paddingBottom: 20,
+              width: '100%',
             }}
             captureAudio={false}
             type={RNCamera.Constants.Type.back}
@@ -82,7 +89,7 @@ export default function Finish({route}) {
           </RNCamera>
         </Card>
         <Button
-          style={{marginTop: 11, backgroundColor: '#7D40E7'}}
+          style={{margin: 0, marginTop: 11, backgroundColor: '#7D40E7'}}
           onPress={handleFinish}>
           Enviar
         </Button>

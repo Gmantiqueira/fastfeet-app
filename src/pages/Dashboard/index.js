@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, View} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {format} from 'date-fns';
 
+import {debounce} from 'lodash';
+
 import {useDispatch, useSelector} from 'react-redux';
 
-import api from '@/services/api';
+import {api} from '@/services/api';
 import {logout} from '@/store/modules/deliveryman/actions';
 
 import {
@@ -30,6 +33,7 @@ import {
   Row,
   Scroll,
   Tab,
+  TabText,
   Tabs,
   TitleWrapper,
   Top,
@@ -44,15 +48,18 @@ export default function Dashboard({navigation}) {
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  async function loadDeliveries() {
-    console.log('carregou');
-    setLoading(true);
+  async function loadDeliveries(tabIndex = false) {
+    const currentTab = typeof tabIndex === 'number' ? tabIndex : activeTab;
     try {
-      const {data} = await api.get(`deliveryman/${id}/deliveries`);
+      const {data} = await api.get(
+        `deliveryman/${id}/deliveries?${
+          currentTab === 0 ? '' : 'finished=true'
+        }`,
+      );
 
       setDeliveries(data);
       setLoading(false);
-    } catch {
+    } catch (cancelled) {
       Alert.alert(
         'Falha de requisição.',
         'Falha ao trazer as informações das encomendas.',
@@ -61,9 +68,28 @@ export default function Dashboard({navigation}) {
     }
   }
 
-  useEffect(() => {
-    loadDeliveries();
-  }, []);
+  function handleTab(tabIndex) {
+    setDeliveries([]);
+    setLoading(true);
+    setActive(tabIndex);
+  }
+
+  useEffect(
+    debounce(() => {
+      setDeliveries([]);
+      setLoading(true);
+      loadDeliveries(activeTab);
+    }, 1000),
+    [activeTab],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      setDeliveries([]);
+      setLoading(true);
+      loadDeliveries();
+    }, []),
+  );
 
   const dispatch = useDispatch();
   function handleLogout() {
@@ -96,7 +122,7 @@ export default function Dashboard({navigation}) {
           />
           <TextWrapper>
             <Greet>Bem vindo de volta,</Greet>
-            <Bold>{name}</Bold>
+            <Bold>{truncateString(name, 17)}</Bold>
           </TextWrapper>
         </Row>
         <Icon
@@ -110,11 +136,11 @@ export default function Dashboard({navigation}) {
       <Tabs>
         <Bold>Entregas</Bold>
         <Row>
-          <Tab onPress={() => setActive(0)} active={activeTab === 0}>
-            Pendentes
+          <Tab onPress={() => handleTab(0)}>
+            <TabText active={activeTab === 0}>Pendentes</TabText>
           </Tab>
-          <Tab onPress={() => setActive(1)} active={activeTab === 1}>
-            Entregues
+          <Tab onPress={() => handleTab(1)}>
+            <TabText active={activeTab === 1}>Entregues</TabText>
           </Tab>
         </Row>
       </Tabs>

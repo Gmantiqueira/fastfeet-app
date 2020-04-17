@@ -51,7 +51,7 @@ export const TextWrapper = styled.View`
 
 export const Greet = styled.Text`
   color: #666;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 26px;
 `;
 
@@ -61,12 +61,15 @@ export const Bold = styled.Text`
   line-height: 29px;
 `;
 
-export const Tab = styled.Text`
+export const Tab = styled(BaseButton)`
+  margin-left: 15px;
+`;
+
+export const TabText = styled.Text`
   color: ${props => (props.active ? '#7D40E7' : '#999999')};
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bold;
   line-height: 16px;
-  margin-left: 15px;
   text-decoration: ${props => (props.active ? 'underline' : 'none')};
 `;
 
@@ -122,17 +125,17 @@ export const ProgressDot = styled.View`
 export const InfoWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 8px;
 `;
 
 export const ProgressInfo = styled.Text`
   align-items: center;
   color: #999;
   flex-direction: row;
-  font-size: 8px;
+  font-size: 12px;
   margin-bottom: 6px;
-  width: 48px;
   text-align: center;
+  width: 70px;
 `;
 
 export const Bottom = styled.View`
@@ -146,13 +149,13 @@ export const Bottom = styled.View`
 
 export const InfoTitle = styled.Text`
   color: #999;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: bold;
 `;
 
 export const InfoText = styled.Text`
   color: #444;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bold;
 `;
 
@@ -165,7 +168,7 @@ export const Details = styled(BaseButton)`
 
 export const DetailsText = styled.Text`
   color: #7d40e7;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bold;
 `;
 

@@ -50,7 +50,6 @@ function TabNavigator() {
 }
 
 function StackNavigator({isSigned = false}) {
-  console.log((isSigned = false));
   return (
     <Stack.Navigator
       screenOptions={{

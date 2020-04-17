@@ -3,7 +3,7 @@ import * as RootNavigation from '@/services/navigation';
 
 import {Alert} from 'react-native';
 
-import api from '@/services/api';
+import {api} from '@/services/api';
 
 import {
   startDeliverySuccess,
@@ -25,7 +25,7 @@ export function* withdrawDelivery({payload}) {
 
     if (data.error) {
       yield put(startDeliveryFailure());
-      Alert.alert('Erro', data.error);
+      Alert.alert('', data.error);
       return;
     }
 
@@ -33,10 +33,7 @@ export function* withdrawDelivery({payload}) {
 
     RootNavigation.navigate('Dashboard');
   } catch (err) {
-    Alert.alert(
-      'Erro',
-      'Erro ao enviar informações de retirada. Tente novamente.',
-    );
+    Alert.alert('', 'Erro ao enviar informações de retirada. Tente novamente.');
     yield put(startDeliveryFailure());
   }
 }
@@ -59,12 +56,11 @@ export function* finishDelivery({payload}) {
     });
 
     yield put(finishDeliverySuccess());
-    Alert.alert('Sucesso', 'Encomenda entregue com sucesso!');
+    Alert.alert('', 'Encomenda entregue com sucesso!');
     RootNavigation.navigate('Dashboard');
   } catch (err) {
-    console.log('err', err);
     Alert.alert(
-      'Erro',
+      '',
       'Erro ao enviar informações de finalização de entrega. Tente novamente.',
     );
     yield put(finishDeliveryFailure());
@@ -81,7 +77,7 @@ export function* reportProblem({payload}) {
     yield put(reportProblemSuccess());
   } catch (err) {
     Alert.alert(
-      'Erro',
+      '',
       'Erro ao enviar informações ao reportar problema. Tente novamente.',
     );
     yield put(reportProblemFailure());

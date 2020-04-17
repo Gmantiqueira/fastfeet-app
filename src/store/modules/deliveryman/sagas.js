@@ -1,6 +1,6 @@
 import {takeLatest, call, put, all} from 'redux-saga/effects';
 
-import api from '@/services/api';
+import {api} from '@/services/api';
 import * as RootNavigation from '@/services/navigation';
 
 import {Alert} from 'react-native';

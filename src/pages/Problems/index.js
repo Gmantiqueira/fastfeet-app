@@ -3,7 +3,7 @@ import {ActivityIndicator, Alert} from 'react-native';
 
 import {format} from 'date-fns';
 
-import api from '@/services/api';
+import {api} from '@/services/api';
 
 import {
   Card,
