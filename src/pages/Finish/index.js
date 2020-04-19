@@ -18,7 +18,7 @@ export default function Finish({route}) {
   const dispatch = useDispatch();
   const deliveryId = route.params;
   function handleFinish() {
-    if (!data.uri) {
+    if (!preview) {
       Alert.alert(
         '',
         'Não é possível finalizar a entrega sem a imagem da assinatura. Tire a foto e tente novamente.',

@@ -6,7 +6,7 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const Scroll = styled.ScrollView.attrs(
+export const Scroll = styled.FlatList.attrs(
   props =>
     props.loading && {
       contentContainerStyle: {justifyContent: 'center', flex: 1},
@@ -84,6 +84,13 @@ export const Card = styled.View`
 export const TitleWrapper = styled.View`
   align-items: center;
   flex-direction: row;
+`;
+
+export const LoaderWrapper = styled.View`
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
 `;
 
 export const Top = styled.View`

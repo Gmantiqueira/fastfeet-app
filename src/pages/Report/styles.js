@@ -23,8 +23,8 @@ export const Container = styled.View`
 
 export const Card = styled.View`
   background-color: #fff;
-  border: 1px solid black;
   border-radius: 4px;
+  elevation: 2;
   padding: 20px;
 `;
 

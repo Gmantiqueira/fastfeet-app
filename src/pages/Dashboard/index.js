@@ -1,4 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import {ActivityIndicator, Alert, View} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -26,6 +32,7 @@ import {
   InfoText,
   InfoTitle,
   InfoWrapper,
+  LoaderWrapper,
   Progress,
   ProgressDot,
   ProgressInfo,
@@ -42,53 +49,87 @@ import {
 
 export default function Dashboard({navigation}) {
   const [activeTab, setActive] = useState(0);
+  const [page, setPagination] = useState(1);
+  const [loadingPage, setLoadingPage] = useState(false);
 
   const {id, name, url} = useSelector(state => state.deliveryman.profile);
 
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [haveMoreData, setHaveMoreData] = useState(true);
 
-  async function loadDeliveries(tabIndex = false) {
-    const currentTab = typeof tabIndex === 'number' ? tabIndex : activeTab;
+  async function loadDeliveries(resetPagination) {
+    if (resetPagination) {
+      setDeliveries([]);
+    }
+
+    if (page > 1) {
+      setLoadingPage(true);
+    } else {
+      setLoading(true);
+    }
+
     try {
       const {data} = await api.get(
         `deliveryman/${id}/deliveries?${
-          currentTab === 0 ? '' : 'finished=true'
+          activeTab === 0 ? '' : 'finished=true'
         }`,
+        {
+          params: {page: resetPagination ? 1 : page},
+        },
       );
 
-      setDeliveries(data);
+      setDeliveries(
+        resetPagination || page === 1
+          ? data
+          : oldElements => [...oldElements, ...data],
+      );
+
+      if (data.length < 10) {
+        setHaveMoreData(false);
+      } else {
+        setHaveMoreData(true);
+      }
+
       setLoading(false);
+      setLoadingPage(false);
     } catch (cancelled) {
       Alert.alert(
         'Falha de requisição.',
         'Falha ao trazer as informações das encomendas.',
       );
       setLoading(false);
+      setLoadingPage(false);
     }
   }
 
   function handleTab(tabIndex) {
+    setHaveMoreData(true);
     setDeliveries([]);
     setLoading(true);
     setActive(tabIndex);
   }
 
-  useEffect(
-    debounce(() => {
-      setDeliveries([]);
-      setLoading(true);
-      loadDeliveries(activeTab);
-    }, 1000),
-    [activeTab],
-  );
-
   useFocusEffect(
     useCallback(() => {
-      setDeliveries([]);
-      setLoading(true);
-      loadDeliveries();
+      setPagination(1);
     }, []),
+  );
+
+  useEffect(() => {
+    if (page > 1 && haveMoreData) {
+      loadDeliveries();
+    }
+  }, [page]);
+
+  useFocusEffect(
+    useCallback(
+      debounce(() => {
+        setPagination(1);
+        loadDeliveries(true);
+      }, 1000),
+      [activeTab],
+    ),
   );
 
   const dispatch = useDispatch();
@@ -145,57 +186,73 @@ export default function Dashboard({navigation}) {
         </Row>
       </Tabs>
 
-      <Scroll loading={loading}>
-        {loading && <ActivityIndicator size="large" color="#7D40E7" />}
-        {deliveries.map(delivery => {
-          return (
-            <Card key={delivery.id}>
-              <Top>
-                <TitleWrapper>
-                  <Icon color="#7d40e7" name="local-shipping" size={36} />
-                  <CardTitle>{truncateString(delivery.product, 35)}</CardTitle>
-                </TitleWrapper>
-                <Progress>
-                  <DotWrapper>
-                    <ProgressLine />
-                    <ProgressDot filled />
-                    <ProgressDot filled={delivery.start_date} />
-                    <ProgressDot filled={delivery.end_date} />
-                  </DotWrapper>
-                  <InfoWrapper>
-                    <ProgressInfo>Aguardando retirada</ProgressInfo>
-                    <ProgressInfo>Retirada</ProgressInfo>
-                    <ProgressInfo>Entregue</ProgressInfo>
-                  </InfoWrapper>
-                </Progress>
-              </Top>
-              <Bottom>
-                <View>
-                  <InfoTitle>Data</InfoTitle>
-                  <InfoText>
-                    {delivery.start_date
-                      ? format(new Date(delivery.start_date), 'dd/MM/yyyy')
-                      : '-- / -- / ----'}
-                  </InfoText>
-                </View>
+      <Scroll
+        loading={loading}
+        data={deliveries}
+        ListEmptyComponent={() =>
+          loading && <ActivityIndicator size="large" color="#7D40E7" />
+        }
+        renderItem={({item}) => (
+          <Card>
+            <Top>
+              <TitleWrapper>
+                <Icon color="#7d40e7" name="local-shipping" size={36} />
+                <CardTitle>{truncateString(item.product, 35)}</CardTitle>
+              </TitleWrapper>
+              <Progress>
+                <DotWrapper>
+                  <ProgressLine />
+                  <ProgressDot filled />
+                  <ProgressDot filled={item.start_date} />
+                  <ProgressDot filled={item.end_date} />
+                </DotWrapper>
+                <InfoWrapper>
+                  <ProgressInfo>Aguardando retirada</ProgressInfo>
+                  <ProgressInfo>Retirada</ProgressInfo>
+                  <ProgressInfo>Entregue</ProgressInfo>
+                </InfoWrapper>
+              </Progress>
+            </Top>
+            <Bottom>
+              <View>
+                <InfoTitle>Data</InfoTitle>
+                <InfoText>
+                  {item.start_date
+                    ? format(new Date(item.start_date), 'dd/MM/yyyy')
+                    : '-- / -- / ----'}
+                </InfoText>
+              </View>
 
-                <View>
-                  <InfoTitle>Cidade</InfoTitle>
-                  <InfoText>
-                    {truncateString(delivery.recipient.city, 10)}
-                  </InfoText>
-                </View>
-                <Details
-                  onPress={() => {
-                    details(delivery);
-                  }}>
-                  <DetailsText>Ver detalhes</DetailsText>
-                </Details>
-              </Bottom>
-            </Card>
-          );
-        })}
-      </Scroll>
+              <View>
+                <InfoTitle>Cidade</InfoTitle>
+                <InfoText>{truncateString(item.recipient.city, 10)}</InfoText>
+              </View>
+              <Details
+                onPress={() => {
+                  details(item);
+                }}>
+                <DetailsText>Ver detalhes</DetailsText>
+              </Details>
+            </Bottom>
+          </Card>
+        )}
+        keyExtractor={item => item.id}
+        onEndReached={() => {
+          if (deliveries.length && haveMoreData && !loadingPage) {
+            setLoadingPage(true);
+            setPagination(old => old + 1);
+          }
+        }}
+        onEndReachedThreshold={1}
+        ListFooterComponent={() =>
+          deliveries.length !== 0 &&
+          loadingPage && (
+            <LoaderWrapper>
+              <ActivityIndicator size="large" color="#7D40E7" />
+            </LoaderWrapper>
+          )
+        }
+      />
     </Container>
   );
 }

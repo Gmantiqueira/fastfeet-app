@@ -66,7 +66,8 @@ export const FieldInfo = styled.Text`
 export const Action = styled(BaseButton)`
   align-items: center;
   flex: 1;
-  min-height: 83px;
+  height: 100%;
+  max-height: 83px;
   justify-content: center;
   padding: 15px 0;
 `;
